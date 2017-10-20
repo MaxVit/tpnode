@@ -25,6 +25,7 @@ const services={
     postRetrweet: require('./components/tweets/postRetweet'),
     getListeTweets:require('./components/tweets/getListeTweets'),
     getCommentsByTweet:require('./components/tweets/getCommentsByTweet'),
+    getMyTweets:require('./components/tweets/getMyTweets'),
 
   },
   follows: {
@@ -33,6 +34,10 @@ const services={
 	follow: require('./components/follows/follow'),
 	unfollow: require('./components/follows/unfollow'),
   },
+  tokens:{
+  	getUserTokens: require('./components/tokens/getUserTokens'),
+  	updateUserTokens: require('./components/tokens/updateUserTokens')
+  }
 }
 
 // variables d'environement
@@ -60,7 +65,7 @@ app.get('/users/:user_id/tweets', services.tweets.getTweetsByUser);
 app.get('/users/:user_id/likes', services.tweets.getLikesByUser);
 //------------------------------------------------------------------------------------------------------------------
 
-
+//-----------------------------------------
 
 // -----------------------------------------GET USER FOLLOWERS---------------------------------------------------------
 app.get('/users/:user_id/followers', services.follows.getUsersFollowersUser);
@@ -74,7 +79,21 @@ app.get('/users/:user_id/followings', services.follows.getUsersFollowingUser);
 app.post('/users', services.users.postUsers);
 //------------------------------------------------------------------------------------------------------------------
 
+
+
 //------------------------------------------AUTHENTIFICATION------------------------------------------------------------
+
+// -----------------------------------------GET USER TOKENS--------------------------------------------------------
+app.get('/myaccount/tokens', authentification, services.tokens.getUserTokens);
+//------------------------------------------------------------------------------------------------------------------
+
+// -----------------------------------------delate USER TOKENS--------------------------------------------------------
+app.put('/myaccount/tokens', authentification, services.tokens.updateUserTokens);
+//------------------------------------------------------------------------------------------------------------------
+
+// -----------------------------------------GET USER TWEETS---------------------------------------------------------
+app.get('/myaccount/tweets',authentification, services.tweets.getMyTweets);
+//------------------------------------------------------------------------------------------------------------------
 
 
 // -----------------------------------------POST USER TWEETS---------------------------------------------------------
@@ -82,12 +101,12 @@ app.post('/myaccount/tweets', authentification, services.tweets.postTweetsByUser
 //------------------------------------------------------------------------------------------------------------------
 
 // -----------------------------------------POST TWEET COMMENTS---------------------------------------------------------
-app.post('/myaccount/tweets/:tweet_id', authentification,  services.tweets.postCommentsByTweet);
+app.post('/myaccount/tweets/:tweet_id/comments', authentification,  services.tweets.postCommentsByTweet);
 //------------------------------------------------------------------------------------------------------------------
 
 
 // -----------------------------------------GET TWEET COMMENTS---------------------------------------------------------
-app.get('/tweets/:tweet_id/comments',authentification, services.tweets.getCommentsByTweet);
+app.get('/myaccount/tweets/:tweet_id/comments',authentification, services.tweets.getCommentsByTweet);
 //------------------------------------------------------------------------------------------------------------------
 
 // -----------------------------------------DELETE TWEET---------------------------------------------------------

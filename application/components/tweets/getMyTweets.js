@@ -3,22 +3,32 @@ const env = process.env.NODE_ENV||'development'; //constante env tjrs en majuscu
 const config = require(`../../config/${env}`); // require un fichier config en fonction d'environnement
 
 module.exports = function (req,res){
-    config.DB('comments').insert({
-        user_id:req.user_id,
-        tweet_id:req.params.tweet_id,
-        message:req.body.message,
-    })
+   config.DB('tweets')
+   .join('users', 'tweets.user_id', 'users.id')
+   .select(
+       'tweets.user_id',
+       'tweets.id', 
+       'tweets.message', 
+       'users.first_name', 
+       'users.last_name'
+    )
+   .where({
+       'tweets.user_id': req.user_id,
+       'tweets.deleted_at': null
+   })
     .then(function(rows){
         return res.status(201).json({
             statusCode:201,
-            data:'rows'
-        })
+            errors:[],
+            data: rows
+            
+        });
     })
     .catch(function(err){
         return res.status(401).json({
             statusCode:401,
-            error:'errors',
+            error: 'error',
             data:{}
-        })
-    })
+        });
+    });
 }
