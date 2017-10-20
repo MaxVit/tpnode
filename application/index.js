@@ -26,6 +26,7 @@ const services={
     getListeTweets:require('./components/tweets/getListeTweets'),
     getCommentsByTweet:require('./components/tweets/getCommentsByTweet'),
     getMyTweets:require('./components/tweets/getMyTweets'),
+    getLastTweets:require('./components/tweets/getLastTweets')
 
   },
   follows: {
@@ -78,7 +79,9 @@ app.get('/users/:user_id/followings', services.follows.getUsersFollowingUser);
 // -----------------------------------------POST USERS---------------------------------------------------------
 app.post('/users', services.users.postUsers);
 //------------------------------------------------------------------------------------------------------------------
-
+// -----------------------------------------PAGINATIONS---------------------------------------------------------
+app.get('/lasttweets', services.tweets.getLastTweets);
+//------------------------------------------------------------------------------------------------------------------
 
 
 //------------------------------------------AUTHENTIFICATION------------------------------------------------------------
